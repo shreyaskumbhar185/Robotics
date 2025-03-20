@@ -1,6 +1,6 @@
 # MPU6050
-Completely Tested And working code 
-Download the given libraires , directly inculde them in your IDE and use the code.
+Completely Tested And working code ||
+Download the given ZIP files , directly inculde them in your IDE and use the code.
 
 
 MPU Pinouts
