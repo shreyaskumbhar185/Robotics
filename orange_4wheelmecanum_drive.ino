@@ -1,10 +1,12 @@
 #include <ps5Controller.h>
 
-
-
 //DEFINING VARIABLES
-int pwmLF=17,pwmRF=22,pwmLB=19,pwmRB=16,DirLF=18,DirRF=23,DirLB=21 ,DirRB=4;
+int pwmLF=17,pwmRF=22,pwmLB=19,pwmRB=16;
+int DirLF=18,DirRF=23,DirLB=21 ,DirRB=4;
+// int pwmLF = 19, pwmRF = 17, pwmLB = 16, pwmRB = 22;   //not applicable because designing orietation cant be changed
+// int DirLF = 21, DirRF = 18, DirLB = 4, DirRB = 23;
 float Lx,Rx,Ly,Ry,z;
+bool R1;
 
 //SETUP
 void setup() {
@@ -40,6 +42,7 @@ void Controls()
   Ly=ps5.LStickY(); 
   Ry=ps5.RStickY();
   Rx=ps5.RStickX();
+  R1=ps5.R1();
 }
 //FUNCTIONS FOR DIRECTION
 float mapp(float control){
@@ -58,7 +61,7 @@ float mapp(float control){
 }
 
 //FUNCTIONS FOR MOVEMENT
-void front(float control)
+void Right(float control)   //front
 {
   z = mapp(control);
   digitalWrite(DirLF,HIGH);
@@ -73,7 +76,7 @@ void front(float control)
 }
 
 
-void back(float control)
+void Left(float control)  //back
 {
   z = mapp(control);
   digitalWrite(DirLF,LOW);
@@ -135,7 +138,7 @@ void stop()
   analogWrite(pwmRB,0);
 } 
 
-void Left(float control)
+void Front(float control) //left
 {
   z = mapp(control);
   digitalWrite(DirLF,LOW);
@@ -148,8 +151,38 @@ void Left(float control)
   analogWrite(pwmRB,z);
  
 }
+void RightFront(float control) //left front
+{
+  z = mapp(control);
+  // digitalWrite(DirLF,LOW);
+  // analogWrite(pwmLF,z);
+  analogWrite(pwmLF,0);
+  digitalWrite(DirRF,HIGH);
+  analogWrite(pwmRF,z);
+  digitalWrite(DirLB,HIGH);
+  analogWrite(pwmLB,z);
+  analogWrite(pwmRB,0);
+  // digitalWrite(DirRB,LOW);
+  // analogWrite(pwmRB,z);
+ 
+}
+void LeftFront(float control)  //left back
+{
+  z = mapp(control);
+  // digitalWrite(DirLF,LOW);
+  // analogWrite(pwmLF,z);
+  analogWrite(pwmLF,0);
+  digitalWrite(DirRF,LOW);
+  analogWrite(pwmRF,z);
+  digitalWrite(DirLB,LOW);
+  analogWrite(pwmLB,z);
+  analogWrite(pwmRB,0);
+  // digitalWrite(DirRB,LOW);
+  // analogWrite(pwmRB,z);
+ 
+}
 
-void Right(float control)
+void Back(float control) // back
 {
   z = mapp(control);
   digitalWrite(DirLF,HIGH);
@@ -162,31 +195,90 @@ void Right(float control)
   analogWrite(pwmRB,z);
  
 }
-
+void RightBack(float control)  //right front
+{
+  z = mapp(control);
+  digitalWrite(DirLF,HIGH);
+  analogWrite(pwmLF,z);
+  analogWrite(pwmRF,0);
+  analogWrite(pwmLB,0);
+  // digitalWrite(DirRF,LOW);
+  // analogWrite(pwmRF,z);
+  // digitalWrite(DirLB,LOW);
+  // analogWrite(pwmLB,z);
+  digitalWrite(DirRB,HIGH);
+  analogWrite(pwmRB,z);
+ 
+}
+void LeftBack(float control) //right back
+{
+  z = mapp(control);
+  digitalWrite(DirLF,LOW);
+  analogWrite(pwmLF,z);
+  analogWrite(pwmRF,0);
+  analogWrite(pwmLB,0);
+  // digitalWrite(DirRF,LOW);
+  // analogWrite(pwmRF,z);
+  // digitalWrite(DirLB,LOW);
+  // analogWrite(pwmLB,z);
+  digitalWrite(DirRB,LOW);
+  analogWrite(pwmRB,z);
+ 
+}
 
 void loop() {
   
   Controls();
     
  if (Ly > 30) {
-    front(Ly);
+    Front(Ly);
     Serial.println(Ly);
-  } else if (Ly < -30) {
+  } 
+  else if (Ly < -30) {
         Serial.println(Ly);
-    back(Ly);
-  } else if (Lx < -30) {
-        Serial.println(Ly);
+    Back(Ly);
+  } 
+  else if (Lx < -30) {
+        Serial.println(Lx);
     Right(Lx);
-  } else if (Lx > 30) {
-        Serial.println(Ly);
+  } 
+  else if (Lx > 30) {
+        Serial.println(Lx);
     Left(Lx);
-  } else if (Rx > 30) {
-        Serial.println(Ly);
+  } 
+  else if (Rx > 30) {
+        Serial.println(Rx);
     clockwise(Rx);
-  } else if (Rx < -30) {
-        Serial.println(Ly);
+  } 
+  else if (Rx < -30) {
+        Serial.println(Rx);
     anticlockwise(Rx);
-  } else {
+  } 
+  else if (Ry < -30) {
+        Serial.println(Ry);
+    if (R1){
+      LeftFront(Ry);
+    } else {
+    LeftBack(Ry);
+    }
+  } 
+  else if (Ry > 30) {
+        Serial.println(Ry);
+    if (R1){
+      RightBack(Ry);
+    } else {
+      RightFront(Ry);
+      }
+  } 
+  // else if (Ry < -30 && R1==1) {
+  //       Serial.println(Ry);
+  //   LeftFront(Ry);
+  // } 
+  // else if (Ry > 30 && R1==1) {
+  //       Serial.println(Ry);
+  //   RightBack(Ry);
+  // } 
+  else {
     stop();
   }
 
