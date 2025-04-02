@@ -53,7 +53,7 @@ float mapp(float control){
 }
 
 //FUNCTIONS FOR MOVEMENT
-void Right(float control)   //front
+void Right(float control)   
 {
   z = mapp(control);
   digitalWrite(dirLF,HIGH);
@@ -67,7 +67,7 @@ void Right(float control)   //front
 }
 
 
-void Left(float control)  //back
+void Left(float control)  
 {
   z = mapp(control);
   digitalWrite(dirLF,LOW);
@@ -126,7 +126,7 @@ void stop()
   
 } 
 
-void Front(float control) //left
+void Front(float control) 
 {
   z = mapp(control);
   digitalWrite(dirLF,HIGH);
@@ -139,7 +139,7 @@ void Front(float control) //left
  
 }
 
-void Back(float control) // back
+void Back(float control) 
 {
   z = mapp(control);
   digitalWrite(dirLF,HIGH);
