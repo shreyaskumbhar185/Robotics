@@ -1,10 +1,14 @@
 #include <ps5Controller.h>
 
 //DEFINING VARIABLES
-int pwmLF=17, pwmRF=22, pwmB=19;
-int dirLF=18, dirRF=23, dirB=21;
+// LF- LEFT FRONT
+// RF- RIGHT FRONT
+// B-  BACK
+
+int   pwmLF=17,     pwmRF=22,    pwmB=19;
+int   dirLF=18,     dirRF=23,    dirB=21;
 float Lx,Rx,Ly,Ry,z;
-// bool R1;
+
 
 //SETUP
 void setup() {
@@ -34,7 +38,6 @@ void Controls()
   Ly=ps5.LStickY(); 
   Ry=ps5.RStickY();
   Rx=ps5.RStickX();
-  // R1=ps5.R1();
 }
 //FUNCTIONS FOR dirECTION
 float mapp(float control){
