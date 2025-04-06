@@ -1,14 +1,11 @@
 #include <ps5Controller.h>
+#include <esp_system.h>
 
 //DEFINING VARIABLES
-// LF- LEFT FRONT
-// RF- RIGHT FRONT
-// B-  BACK
-
-int   pwmLF=17,     pwmRF=22,    pwmB=19;
-int   dirLF=18,     dirRF=23,    dirB=21;
+int pwmLF=23, pwmRF=21, pwmB=18;
+int dirLF=22, dirRF=19, dirB=17;
 float Lx,Rx,Ly,Ry,z;
-
+// bool R1;
 
 //SETUP
 void setup() {
@@ -38,17 +35,18 @@ void Controls()
   Ly=ps5.LStickY(); 
   Ry=ps5.RStickY();
   Rx=ps5.RStickX();
+  // R1=ps5.R1();
 }
 //FUNCTIONS FOR dirECTION
 float mapp(float control){
   float z;
   if((-128<=control)&&(control<=-30))
   {
-    z=map(control,-30,-128,0,150);//mapping negative values
+    z=map(control,-30,-128,0,100);//mapping negative values
   }
   else if((30<=control)&&(control<=128))//mapping positive values
   {
-    z=map(control,30,128,0,150);
+    z=map(control,30,128,0,100);
   }
   else
   z =0;
@@ -56,7 +54,7 @@ float mapp(float control){
 }
 
 //FUNCTIONS FOR MOVEMENT
-void Right(float control)   
+void Left(float control)   
 {
   z = mapp(control);
   digitalWrite(dirLF,HIGH);
@@ -70,7 +68,7 @@ void Right(float control)
 }
 
 
-void Left(float control)  
+void Right(float control)  
 {
   z = mapp(control);
   digitalWrite(dirLF,LOW);
@@ -80,7 +78,6 @@ void Left(float control)
   digitalWrite(dirB,HIGH);
   analogWrite(pwmB,z);
   
- 
 }
 
 void clockwise(float control)
@@ -136,7 +133,6 @@ void Front(float control)
   analogWrite(pwmLF,z);
   digitalWrite(dirRF,LOW);
   analogWrite(pwmRF,z);
-  
   analogWrite(pwmB,0);
   
  
@@ -145,12 +141,11 @@ void Front(float control)
 void Back(float control) 
 {
   z = mapp(control);
-  digitalWrite(dirLF,HIGH);
+  digitalWrite(dirLF,LOW);
   analogWrite(pwmLF,z);
-  digitalWrite(dirRF,LOW);
+  digitalWrite(dirRF,HIGH);
   analogWrite(pwmRF,z);
-  digitalWrite(dirB,LOW);
-  analogWrite(pwmB,z);
+  analogWrite(pwmB,0);
 
 }
 
