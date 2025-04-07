@@ -1,6 +1,6 @@
 #include <ps5Controller.h>
 #include <esp_system.h>
-
+//???????????????? BOT 1 GREEN ??????????????????????????
 //DEFINING VARIABLES
 int pwmLF=23, pwmRF=21, pwmB=18;
 int dirLF=22, dirRF=19, dirB=17;
@@ -42,11 +42,11 @@ float mapp(float control){
   float z;
   if((-128<=control)&&(control<=-30))
   {
-    z=map(control,-30,-128,0,100);//mapping negative values
+    z=map(control,-30,-128,0,150);//mapping negative values
   }
   else if((30<=control)&&(control<=128))//mapping positive values
   {
-    z=map(control,30,128,0,100);
+    z=map(control,30,128,0,150);
   }
   else
   z =0;
@@ -57,12 +57,14 @@ float mapp(float control){
 void Left(float control)   
 {
   z = mapp(control);
-  digitalWrite(dirLF,HIGH);
-  analogWrite(pwmLF,z);
-  digitalWrite(dirRF,HIGH);
-  analogWrite(pwmRF,z);
   digitalWrite(dirB,LOW);
   analogWrite(pwmB,z);
+  digitalWrite(dirRF,HIGH);
+  analogWrite(pwmRF,z/1.80);
+  digitalWrite(dirLF,HIGH);
+  analogWrite(pwmLF,z/1.80);
+
+  
   
  
 }
@@ -71,12 +73,13 @@ void Left(float control)
 void Right(float control)  
 {
   z = mapp(control);
-  digitalWrite(dirLF,LOW);
-  analogWrite(pwmLF,z);
-  digitalWrite(dirRF,LOW);
-  analogWrite(pwmRF,z);
   digitalWrite(dirB,HIGH);
   analogWrite(pwmB,z);
+  digitalWrite(dirLF,LOW);
+  analogWrite(pwmLF,z/1.80);
+  digitalWrite(dirRF,LOW);
+  analogWrite(pwmRF,z/1.80);
+  
   
 }
 
@@ -96,12 +99,13 @@ void clockwise(float control)
 void anticlockwise(float control)
 {
   z = mapp(control);
+  digitalWrite(dirB,LOW);
+  analogWrite(pwmB,z);
   digitalWrite(dirLF,LOW);
   analogWrite(pwmLF,z);
   digitalWrite(dirRF,LOW);
   analogWrite(pwmRF,z);
-  digitalWrite(dirB,LOW);
-  analogWrite(pwmB,z);
+  
   
  
 }
@@ -181,5 +185,4 @@ void loop() {
   else {
     stop();
   }
-
 }
